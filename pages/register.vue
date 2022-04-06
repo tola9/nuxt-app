@@ -5,14 +5,14 @@
         <div class="card">
           <div class="card-header">Add New User</div>
           <div class="card-body">
-            <b-form @submit.prevent="addUser">
+            <b-form @submit.prevent="signUp">
               <b-container fluid>
                 <b-row class="my-1">
                   <b-col sm="3">
                     <label for="name">Name</label>
                   </b-col>
                   <b-col sm="9">
-                    <b-form-input v-model="name" id="name" type="text" />
+                    <b-form-input id="name" v-model="register.name" type="text" required />
                   </b-col>
                 </b-row>
                 <b-row class="my-1">
@@ -20,19 +20,19 @@
                     <label for="email">Email</label>
                   </b-col>
                   <b-col sm="9">
-                    <b-form-input id="email" v-model="email" type="email" required />
+                    <b-form-input id="email" v-model="register.email" type="email" required />
                   </b-col>
                 </b-row>
                 <b-row class="my-1">
                   <b-col sm="3">
-                    <label for="age">Age</label>
+                    <label for="password">Password</label>
                   </b-col>
                   <b-col sm="9">
-                    <b-form-input id="age" v-model="age" type="text" required />
+                    <b-form-input id="password" v-model="register.password"  type="password" required />
                   </b-col>
                 </b-row>
                 <div class="btnSubmit">
-                  <button type="submit" class="btn btn-success col-sm-3">Add</button>
+                  <button type="submit" class="btn btn-success col-sm-3">Sign Up</button>
                 </div>
               </b-container>
             </b-form>
@@ -45,39 +45,26 @@
 
 <script>
   export default {
-    name: 'IndexPage',
-    middleware: 'auth',
-    auth: false,
+    name: "register",
     data () {
       return {
-        age: '',
-        name: '',
-        email: '',
-        text: ''
+        register: {
+          name: '',
+          email: '',
+          password: ''
+        }
       }
     },
     methods: {
-      addUser () {
-        this.$store.dispatch('addUser', { email: this.email, name: this.name, age: this.age });
-        this.email = '';
-        this.name = '';
-        this.age = '';
+      signUp() {
+        this.$store.dispatch('register', {name: this.register.name, email: this.register.email, password: this.register.password});
+        this.register.email = '';
+        this.register.password = '';
       }
     }
   }
 </script>
 
 <style scoped>
-  .btnSubmit {
-    text-align: center;
-    padding-top: 10px;
-  }
-  .btn-success {
-    background-color: #17a2b8 !important;
-  }
-  .card-header:first-child {
-    text-align: center;
-    background-color: #17a2b8 !important;
-    color: white;
-  }
+
 </style>

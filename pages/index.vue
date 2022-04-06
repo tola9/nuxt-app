@@ -45,7 +45,6 @@
 <script>
   export default {
     name: 'IndexPage',
-    layout: 'navigationBar',
     data () {
       return {
         fields: [
