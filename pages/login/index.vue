@@ -36,6 +36,8 @@
 </template>
 
 <script>
+  import Vue from "vue";
+
   export default {
     name: "index",
     data () {
@@ -44,10 +46,25 @@
         password: ''
       }
     },
+    created() {
+      if(this.$auth.loggedIn) {
+        this.$router.push('/');
+      }
+    },
     methods: {
       async login() {
-        await this.$store.dispatch('login', {email: this.email, password: this.password})
-      },
+        try {
+          let response = await this.$auth.loginWith('local', {data: {email: this.email, password: this.password}});
+          Vue.toasted.success("Logged In ✔🎉!!", {
+            theme: "toasted-primary",
+            position: "top-right",
+            duration : 3000
+          });
+          this.$auth.$storage.setUniversal('user', response.config.data, true)
+        } catch (err) {
+          console.log(err)
+        }
+      }
     }
   }
 </script>

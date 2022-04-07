@@ -6,9 +6,28 @@ Vue.use(Vuex)
 export default () => new Vuex.Store({
   state: {
     user: [],
-    profile: Object()
+    id: 0,
+    profile: Object(),
+    products: [
+      {
+        id: 1,
+        title: 'Title One',
+        detail: 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using \'Content here, content here\', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for \'lorem ipsum\' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).',
+        image: ''
+      },
+      {
+        id: 2,
+        title: 'Title Two',
+        detail: 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using \'Content here, content here\', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for \'lorem ipsum\' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).',
+        image: ''
+      }
+    ],
+    product: null,
   },
   getters: {
+    // getProduct: (state => state.product),
+    getProducts: (state => state.products),
+    countProducts: (state => state.products.length),
     getProfile: (state => state.profile),
     getUsers: state => state.user,
     countUsers: state => state.user.length,
@@ -24,6 +43,7 @@ export default () => new Vuex.Store({
   },
   mutations: {
     ADD_USER: (state, payload) => {
+      payload.id = ++state.id;
       state.user.push(payload);
       Vue.toasted.success("Created Successfully ✔🎉!!", {
         theme: "toasted-primary",
@@ -42,56 +62,25 @@ export default () => new Vuex.Store({
         position: "top-right"
       });
     },
-    LOGIN: (state, payload) => {
-      let email = localStorage.getItem('email');
-      let password = localStorage.getItem('password');
-      if(email != payload.email || password != payload.password) {
-        Vue.toasted.error('Invalid Credential', {
-          theme: "primary",
-          position: "top-right",
-          duration: 3000
-        });
-        return;
-      }
-      $nuxt._router.push('/')
-    },
     SET_PROFILE: (state, payload) => {
       state.profile = payload;
     },
-    LOGOUT: () => {
-      localStorage.removeItem('email');
-      localStorage.removeItem('password');
-      localStorage.removeItem('name');
-      $nuxt._router.push('login');
-    }
   },
   actions: {
     addUser: (context, payload) => {
       context.commit('ADD_USER', payload)
     },
-    login: async (context, payload) => {
-      try {
-        context.commit('LOGIN', payload);
-        payload.name = localStorage.getItem('name');
-        await context.dispatch('setProfile', payload);
-      } catch (e) {
-        Vue.toasted.error('Invalid Credential', {
-          theme: 'toasted-primary',
-          position: 'top-right',
-          duration: 3000
-        });
-        console.log(e.message);
-      }
-    },
-    register: (context, payload) => {
-      console.log(payload);
+    register: async (context, payload) => {
+      let res = await context.state.$axios.post('register', {
+        name: payload.name,
+        email: payload.email,
+        password: payload.password
+      })
+      console.log(res.data);
       context.commit('REGISTER', payload);
     },
     setProfile: (context, payload) => {
       context.commit('SET_PROFILE', payload);
     },
-    logout: (context) => {
-      context.commit('LOGOUT');
-    }
   }
 })

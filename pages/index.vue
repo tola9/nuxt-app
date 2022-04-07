@@ -5,11 +5,26 @@
         <div class="row col-md-12">
           <div class="col-md-8 mt-3">
             <div class="card">
-              <div class="card-header">
-                <h3 class="align-content-center">Table of users</h3>
-              </div>
               <div class="card-body">
-                <b-table striped hover :fields="fields" :items="$store.getters.getUsers"></b-table>
+                <div class="row">
+                  <div v-for="product of products" :key="product.id" class="col-md-6" >
+                    <b-card
+                      :title="product.title"
+                      img-src="https://picsum.photos/600/300/?image=25"
+                      img-alt="Image"
+                      img-top
+                      tag="article"
+                      style="max-width: 20rem;"
+                      class="mb-2"
+                    >
+                      <b-card-text>
+                        {{ product.detail }}
+                      </b-card-text>
+
+                      <nuxt-link :to="`/product/${product.id}`">Detail</nuxt-link>
+                    </b-card>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -22,7 +37,7 @@
                     <b-card-text>Count: </b-card-text>
                   </div>
                   <div class="col">
-                    <b-card-text>{{ $store.getters.countUsers }}</b-card-text>
+                    <b-card-text>{{ $store.getters.countProducts }}</b-card-text>
                   </div>
                 </div>
                 <div class="row">
@@ -45,9 +60,14 @@
 <script>
   export default {
     name: 'IndexPage',
+    middleware: 'auth',
     data () {
       return {
         fields: [
+          {
+            key: 'id',
+            value: 'Id'
+          },
           {
             key: 'age',
             value: 'Age'
@@ -62,6 +82,11 @@
           }
         ]
       }
+    },
+    computed: {
+      products() {
+        return this.$store.getters.getProducts;
+      }
     }
   }
 </script>
@@ -69,5 +94,16 @@
 <style scoped>
   .card-header:first-child {
     text-align: center;
+  }
+  a {
+    color: white;
+    text-decoration: none;
+    background-color: #007bff;
+    padding: 5px 10px;
+    border-radius: 8px;
+    float: right;
+  }
+  a:hover {
+    opacity: 0.7;
   }
 </style>

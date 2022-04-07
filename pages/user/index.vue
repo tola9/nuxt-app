@@ -1,53 +1,56 @@
 <template>
-  <div class="container">
-    <div class="d-flex flex-row justify-content-center">
-      <div class="col-md-8 mt-3">
-        <div class="card">
-          <div class="card-header">Add New User</div>
-          <div class="card-body">
-            <b-form @submit.prevent="addUser">
-              <b-container fluid>
-                <b-row class="my-1">
-                  <b-col sm="3">
-                    <label for="name">Name</label>
-                  </b-col>
-                  <b-col sm="9">
-                    <b-form-input v-model="name" id="name" type="text" />
-                  </b-col>
-                </b-row>
-                <b-row class="my-1">
-                  <b-col sm="3">
-                    <label for="email">Email</label>
-                  </b-col>
-                  <b-col sm="9">
-                    <b-form-input id="email" v-model="email" type="email" required />
-                  </b-col>
-                </b-row>
-                <b-row class="my-1">
-                  <b-col sm="3">
-                    <label for="age">Age</label>
-                  </b-col>
-                  <b-col sm="9">
-                    <b-form-input id="age" v-model="age" type="text" required />
-                  </b-col>
-                </b-row>
-                <div class="btnSubmit">
-                  <button type="submit" class="btn btn-success col-sm-3">Add</button>
-                </div>
-              </b-container>
-            </b-form>
+  <div>
+    <div class="user container">
+      <div class="d-flex flex-row justify-content-center">
+        <div class="col-md-8 mt-3">
+          <div class="card">
+            <div class="card-header">Add New User</div>
+            <div class="card-body">
+              <b-form @submit.prevent="addUser">
+                <b-container fluid>
+                  <b-row class="my-1">
+                    <b-col sm="3">
+                      <label for="name">Name</label>
+                    </b-col>
+                    <b-col sm="9">
+                      <b-form-input v-model="name" id="name" type="text" />
+                    </b-col>
+                  </b-row>
+                  <b-row class="my-1">
+                    <b-col sm="3">
+                      <label for="email">Email</label>
+                    </b-col>
+                    <b-col sm="9">
+                      <b-form-input id="email" v-model="email" type="email" required />
+                    </b-col>
+                  </b-row>
+                  <b-row class="my-1">
+                    <b-col sm="3">
+                      <label for="age">Age</label>
+                    </b-col>
+                    <b-col sm="9">
+                      <b-form-input id="age" v-model="age" type="text" required />
+                    </b-col>
+                  </b-row>
+                  <div class="btnSubmit">
+                    <button type="submit" class="btn btn-success col-sm-3">Add</button>
+                  </div>
+                </b-container>
+              </b-form>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+
 </template>
 
 <script>
   export default {
     name: 'IndexPage',
     middleware: 'auth',
-    auth: false,
+    auth: true,
     data () {
       return {
         age: '',
@@ -68,6 +71,9 @@
 </script>
 
 <style scoped>
+  .user {
+    height: 300px;
+  }
   .btnSubmit {
     text-align: center;
     padding-top: 10px;

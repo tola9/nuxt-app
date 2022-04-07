@@ -56,10 +56,8 @@
       }
     },
     methods: {
-      signUp() {
-        this.$store.dispatch('register', {name: this.register.name, email: this.register.email, password: this.register.password});
-        this.register.email = '';
-        this.register.password = '';
+      async signUp() {
+        // this.$store.dispatch('register', {name: this.register.name, email: this.register.email, password: this.register.password});
       }
     }
   }
