@@ -123,6 +123,13 @@ export default () => new Vuex.Store({
         }
         return ;
       })
+    },
+    REMOVE_CART: (state, payload) => {
+      let carts = state.cart;
+      let index = carts.findIndex(item => item.id == payload.id);
+      carts.splice(index, 1);
+      state.cart = carts;
+      return state.cart;
     }
   },
   actions: {
@@ -149,6 +156,9 @@ export default () => new Vuex.Store({
     },
     decrease: (context, payload) => {
       context.commit('DECREASE', payload);
+    },
+    removeCart: (context, payload) => {
+      context.commit('REMOVE_CART', payload);
     }
   }
 })

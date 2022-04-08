@@ -22,6 +22,7 @@
                     <b-button class="btn btn-success col-sm-2" @click="decrease(cart)" :disabled="cart.qty == 1">-</b-button>
                     <b-badge variant="light" :style="{fontSize: '14px'}">{{ cart.qty }}</b-badge>
                     <b-button class="btn btn-success col-sm-2" @click="increase(cart)">+</b-button>
+                    <b-button class="btn btn-danger col-sm-3" @click="removeCart(cart)">Remove</b-button>
                 </div>
               </div>
             </div>
@@ -76,6 +77,9 @@
       },
       decrease(payload) {
         this.$store.dispatch('decrease', payload);
+      },
+      removeCart(payload) {
+        this.$store.dispatch('removeCart', payload);
       }
     },
     computed: {
