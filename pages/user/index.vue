@@ -71,6 +71,9 @@
 </script>
 
 <style scoped>
+  .card {
+    margin-top: 50px;
+  }
   .user {
     height: 300px;
   }

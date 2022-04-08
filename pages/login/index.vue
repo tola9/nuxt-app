@@ -55,12 +55,14 @@
       async login() {
         try {
           let response = await this.$auth.loginWith('local', {data: {email: this.email, password: this.password}});
-          Vue.toasted.success("Logged In ✔🎉!!", {
+          this.$auth.$storage.setUniversal('email', response.config.data.email, true)
+          this.$auth.$storage.setUniversal('password', response.config.data.password, true)
+          return Vue.toasted.success("Logged In 🔓!!", {
             theme: "toasted-primary",
             position: "top-right",
             duration : 3000
           });
-          this.$auth.$storage.setUniversal('user', response.config.data, true)
+
         } catch (err) {
           console.log(err)
         }
@@ -70,6 +72,9 @@
 </script>
 
 <style scoped>
+  .card {
+    margin-top: 50px;
+  }
   .btnSubmit {
     text-align: center;
     padding-top: 10px;

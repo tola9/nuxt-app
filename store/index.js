@@ -12,21 +12,49 @@ export default () => new Vuex.Store({
       {
         id: 1,
         title: 'Title One',
-        detail: 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using \'Content here, content here\', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for \'lorem ipsum\' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).',
-        image: ''
+        detail: 'It is a long established fact that a reader will be distracted by the readable contentr  (injected humour and the like).',
+        image: '',
+        price: 12,
+        qty: 1,
       },
       {
         id: 2,
         title: 'Title Two',
-        detail: 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using \'Content here, content here\', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for \'lorem ipsum\' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).',
-        image: ''
+        detail: 'It is a long established fact that a reader will be distracted by the readable content pose (injected humour and the like).',
+        image: '',
+        price: 50,
+        qty: 1,
+      },
+      {
+        id: 3,
+        title: 'Title Three',
+        detail: 'It is a long established fact that a reader will be distracted by the readable contentr  (injected humour and the like).',
+        image: '',
+        price: 40,
+        qty: 1,
+      },
+      {
+        id: 4,
+        title: 'Title Four',
+        detail: 'It is a long established fact that a reader will be distracted by the readable content pose (injected humour and the like).',
+        image: '',
+        price: 25,
+        qty: 1,
       }
     ],
-    product: null,
+    cart: [],
+    qty: 1,
   },
   getters: {
     // getProduct: (state => state.product),
+    totalPrice: (state => {
+      return state.cart.reduce((total, item) => {
+        return total + item.price * item.qty;
+      }, 0);
+    }),
+    getCarts: (state => state.cart),
     getProducts: (state => state.products),
+    countCarts: (state => state.cart.length),
     countProducts: (state => state.products.length),
     getProfile: (state => state.profile),
     getUsers: state => state.user,
@@ -65,6 +93,37 @@ export default () => new Vuex.Store({
     SET_PROFILE: (state, payload) => {
       state.profile = payload;
     },
+    ADD_TO_CART: (state, payload) => {
+      if(state.cart.includes(payload)) {
+        return Vue.toasted.info('Already Exist!', {
+          theme: "toasted-primary",
+          position: "top-right",
+          duration: 3000
+        })
+      }
+      state.cart.push(payload);
+      return Vue.toasted.success('Added Successfully', {
+        theme: "toasted-primary",
+        position: "top-right",
+        duration: 2000
+      })
+    },
+    INCREASE: (state, payload) => {
+      return state.cart.filter(item => {
+        if(item.id == payload.id) {
+          return item.qty++;
+        }
+        return ;
+      })
+    },
+    DECREASE: (state, payload) => {
+      return state.cart.filter(item => {
+        if(item.id == payload.id) {
+          return item.qty--;
+        }
+        return ;
+      })
+    }
   },
   actions: {
     addUser: (context, payload) => {
@@ -82,5 +141,14 @@ export default () => new Vuex.Store({
     setProfile: (context, payload) => {
       context.commit('SET_PROFILE', payload);
     },
+    addToCart: (context, payload) => {
+      context.commit('ADD_TO_CART', payload);
+    },
+    increase: (context, payload) => {
+      context.commit('INCREASE', payload);
+    },
+    decrease: (context, payload) => {
+      context.commit('DECREASE', payload);
+    }
   }
 })

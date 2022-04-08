@@ -1,18 +1,20 @@
 <template>
   <div class="body">
-    <b-navbar toggleable="lg" type="dark" variant="success">
-      <b-navbar-brand href="#">NavBar</b-navbar-brand>
+    <b-navbar toggleable="lg" type="dark" variant="secondary">
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <NuxtLink to="/">Home</NuxtLink>
-          <NuxtLink to="/user">User</NuxtLink>
+          <NuxtLink class="link" active-class="active" exact to="/">Home</NuxtLink>
+          <NuxtLink class="link" active-class="active" exact to="/user">User</NuxtLink>
         </b-navbar-nav>
         <b-navbar-nav class="ml-auto">
-          <b-nav-form>
-            <b-form-input size="sm" class="mr-sm-2" placeholder="Search"></b-form-input>
-            <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
-          </b-nav-form>
+          <div class="text-center">
+            <b-button variant="secondary" @click="cart">
+              Cart
+              <b-badge variant="light">{{ $store.getters.countCarts }} <span class="sr-only">unread messages</span></b-badge>
+            </b-button>
+          </div>
+          <b-avatar badge badge-variant="success" src="https://placekitten.com/300/300" v-if="$auth.loggedIn"></b-avatar>
           <b-nav-item-dropdown right>
             <template #button-content>
               <em v-if="$store.getters.getProfile">{{ $store.getters.getProfile.name }}</em>
@@ -35,6 +37,9 @@
     name: "default",
     components: {Footer},
     methods: {
+      cart() {
+        this.$router.push('/cart');
+      },
       logout() {
         this.$store.dispatch('logout');
       }
@@ -54,14 +59,45 @@
     padding: 0px;
     margin: 0px;
   }
+  .navbar {
+    position: fixed;
+    width: 100%;
+    top: 0px;
+    left: 0px;
+    z-index: 999;
+    padding: 0px;
+  }
   a {
     color: white;
     text-decoration: none;
     background-color: transparent;
-    margin-right: 20px;
+  }
+  .bg-secondary {
+    background-color: rgba(0, 0, 0, 0.05);
   }
   a:hover {
     text-decoration: none;
     color: #000;
+  }
+  .link {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 12px 60px;
+    text-decoration: none;
+    font-size: 12px;
+  }
+  .link:hover {
+    background-color: dodgerblue;
+    color: white;
+    text-decoration: none;
+  }
+  .active {
+    color:white;
+    background-color: dodgerblue;
+  }
+
+  .exact-active-link {
+    color: white;
   }
 </style>

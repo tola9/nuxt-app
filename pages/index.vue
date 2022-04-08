@@ -3,8 +3,7 @@
     <div class="container">
       <div class="d-flex flex-row justify-content-center">
         <div class="row col-md-12">
-          <div class="col-md-8 mt-3">
-            <div class="card">
+          <div class="col-md-8">
               <div class="card-body">
                 <div class="row">
                   <div v-for="product of products" :key="product.id" class="col-md-6" >
@@ -26,7 +25,6 @@
                   </div>
                 </div>
               </div>
-            </div>
           </div>
           <div class="col-md-4 mt-3">
             <div class="card">
@@ -92,6 +90,9 @@
 </script>
 
 <style scoped>
+  .card {
+    margin-top: 50px;
+  }
   .card-header:first-child {
     text-align: center;
   }
