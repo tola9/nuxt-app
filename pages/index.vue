@@ -32,7 +32,7 @@
               <div class="card-body">
                 <div class="row">
                   <div class="col">
-                    <b-card-text>Count: </b-card-text>
+                    <b-card-text>Number of products: </b-card-text>
                   </div>
                   <div class="col">
                     <b-card-text>{{ $store.getters.countProducts }}</b-card-text>

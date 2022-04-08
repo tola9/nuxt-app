@@ -20,7 +20,7 @@
                     </b-card-text>
                   </b-card>
                     <b-button class="btn btn-success col-sm-2" @click="decrease(cart)" :disabled="cart.qty == 1">-</b-button>
-                    <b-badge variant="light">{{ cart.qty }}</b-badge>
+                    <b-badge variant="light" :style="{fontSize: '14px'}">{{ cart.qty }}</b-badge>
                     <b-button class="btn btn-success col-sm-2" @click="increase(cart)">+</b-button>
                 </div>
               </div>
