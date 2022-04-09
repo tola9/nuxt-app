@@ -13,7 +13,7 @@ export default () => new Vuex.Store({
         id: 1,
         title: 'Title One',
         detail: 'It is a long established fact that a reader will be distracted by the readable contentr  (injected humour and the like).',
-        image: '',
+        image: 'https://azcd.domayne.com.au/media/catalog/product/cache/25/small_image/400x225/9df78eab33525d08d6e5fb8d27136e95/1/7/17_159.jpg',
         price: 12,
         qty: 1,
       },
@@ -21,7 +21,7 @@ export default () => new Vuex.Store({
         id: 2,
         title: 'Title Two',
         detail: 'It is a long established fact that a reader will be distracted by the readable content pose (injected humour and the like).',
-        image: '',
+        image: 'https://i.nextmedia.com.au/Utils/ImageResizer.ashx?n=https%3A%2F%2Fi.nextmedia.com.au%2FNews%2F20181003110807_surface-pro-6-1_web.jpg&w=480&c=0&s=1',
         price: 50,
         qty: 1,
       },
@@ -29,7 +29,7 @@ export default () => new Vuex.Store({
         id: 3,
         title: 'Title Three',
         detail: 'It is a long established fact that a reader will be distracted by the readable contentr  (injected humour and the like).',
-        image: '',
+        image: 'https://little-beans.net/wp-content/uploads/2022/02/Surface-Laptop-Studio-eyecatch.jpg',
         price: 40,
         qty: 1,
       },
@@ -37,7 +37,7 @@ export default () => new Vuex.Store({
         id: 4,
         title: 'Title Four',
         detail: 'It is a long established fact that a reader will be distracted by the readable content pose (injected humour and the like).',
-        image: '',
+        image: 'https://surface-world.de/wp-content/uploads/2021/09/microsoft-surface-laptop-studio-for-business-3.jpg',
         price: 25,
         qty: 1,
       }
@@ -126,7 +126,13 @@ export default () => new Vuex.Store({
     },
     REMOVE_CART: (state, payload) => {
       let carts = state.cart;
-      let index = carts.findIndex(item => item.id == payload.id);
+      let index = carts.findIndex(item => {
+        if(item.id == payload.id) {
+          item.qty = 1;
+          return item.id == payload.id;
+        };
+        return ;
+      });
       carts.splice(index, 1);
       state.cart = carts;
       return state.cart;

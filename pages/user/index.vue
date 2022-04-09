@@ -82,11 +82,11 @@
     padding-top: 10px;
   }
   .btn-success {
-    background-color: #17a2b8 !important;
+    background-color: #019267 !important;
   }
   .card-header:first-child {
     text-align: center;
-    background-color: #17a2b8 !important;
+    background-color: #019267 !important;
     color: white;
   }
 </style>

@@ -4,17 +4,17 @@
       <div class="d-flex flex-row justify-content-center">
         <div class="row col-md-12">
           <div class="col-md-8">
+            <div class="card-header mt-5"><h2>All Products</h2></div>
               <div class="card-body">
                 <div class="row">
                   <div v-for="product of products" :key="product.id" class="col-md-6" >
                     <b-card
                       :title="product.title"
-                      img-src="https://picsum.photos/600/300/?image=25"
+                      :img-src="product.image"
                       img-alt="Image"
                       img-top
                       tag="article"
                       style="max-width: 20rem;"
-                      class="mb-2"
                     >
                       <b-card-text>
                         {{ product.detail }}
@@ -26,7 +26,7 @@
                 </div>
               </div>
           </div>
-          <div class="col-md-4 mt-3">
+          <div class="col-md-4 mt-4">
             <div class="card">
               <div class="card-header align-content-center">Lists of users</div>
               <div class="card-body">
@@ -91,7 +91,7 @@
 
 <style scoped>
   .card {
-    margin-top: 50px;
+    margin-top: 20px;
   }
   .card-header:first-child {
     text-align: center;
@@ -99,12 +99,17 @@
   a {
     color: white;
     text-decoration: none;
-    background-color: #007bff;
+    background-color: #019267;
     padding: 5px 10px;
     border-radius: 8px;
     float: right;
   }
   a:hover {
     opacity: 0.7;
+  }
+  .card-body {
+    flex: 1 1 auto;
+    min-height: 1px;
+    padding: 0rem 1.25rem 0.5rem;
   }
 </style>

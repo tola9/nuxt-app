@@ -8,7 +8,7 @@
                 <div class="card-body">
                   <div class="row">
                     <div class="col-md-4">
-                      <b-img thumbnail fluid src="https://picsum.photos/250/250/?image=54" alt="Image 1"></b-img>
+                      <b-img thumbnail fluid :src="product.image" alt="Image 1"></b-img>
                       <b-card-text class="mt-3 align-content-center"><b>Price</b> $ {{ product.price}}</b-card-text>
                       <b-button class="btn btn-success col-sm-2" @click="addToCart(product)">Buy Now</b-button>
                     </div>
@@ -100,5 +100,10 @@
   }
   img {
     padding-top: 8px;
+  }
+  .btn-success {
+    color: #fff;
+    background-color: #019267;
+    border-color: #019267;
   }
 </style>

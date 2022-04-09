@@ -9,10 +9,10 @@
         </b-navbar-nav>
         <b-navbar-nav class="ml-auto">
           <div class="text-center">
-            <b-button variant="secondary" @click="cart">
+            <nuxt-link to="/cart">
               Cart
               <b-badge variant="light">{{ $store.getters.countCarts }} <span class="sr-only">unread messages</span></b-badge>
-            </b-button>
+            </nuxt-link>&nbsp;&nbsp;
           </div>
           <b-avatar badge badge-variant="success" src="https://placekitten.com/300/300" v-if="$auth.loggedIn"></b-avatar>
           <b-nav-item-dropdown right>
@@ -48,6 +48,7 @@
 </script>
 
 <style scoped>
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap');
   .body {
     min-height: 100vh;
     display: flex;
@@ -67,13 +68,21 @@
     z-index: 999;
     padding: 0px;
   }
+  ol, ul, dl {
+    margin-top: 0;
+    /* margin-bottom: 1rem; */
+    width: 1200px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+  }
   a {
     color: white;
     text-decoration: none;
     background-color: transparent;
   }
   .bg-secondary {
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: #65C18C !important;
   }
   a:hover {
     text-decoration: none;
@@ -86,15 +95,16 @@
     padding: 12px 60px;
     text-decoration: none;
     font-size: 12px;
+    font-weight: bold;
   }
   .link:hover {
-    background-color: dodgerblue;
+    background-color: #019267;
     color: white;
     text-decoration: none;
   }
   .active {
     color:white;
-    background-color: dodgerblue;
+    background-color: #019267;
   }
 
   .exact-active-link {
