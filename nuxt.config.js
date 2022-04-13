@@ -23,6 +23,9 @@ export default {
   css: [
   ],
 
+  server: {
+    port: 8080 // default: 3000
+  },
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     '~/plugins/vue-toasted.js'
@@ -47,13 +50,16 @@ export default {
   auth: {
     strategies: {
       local: {
+        user: {
+          property: 'data'
+        },
         token: {
           required: false,
           type: false
         },
         endpoints: {
           login: {url: '/login', method: 'post'},
-          user: {url: '/user', method: 'get'}
+          user: {url: '/user', method: 'get'},
         }
       }
     },

@@ -76,9 +76,6 @@
 <script>
   export default {
     name: "index",
-    created() {
-      console.log('cart', this.$store.getters.getCarts);
-    },
     methods: {
       increase(payload) {
         this.$store.dispatch('increase', payload);

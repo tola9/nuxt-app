@@ -19,7 +19,8 @@
                       <b-card-text>
                         {{ product.detail }}
                       </b-card-text>
-
+                      <img @click="setFavorite(product)" v-if="!product.isFavorite" src="https://img.icons8.com/small/16/000000/like--v1.png"/>
+                      <img v-else src="https://img.icons8.com/tiny-color/16/000000/experimental-like-tiny-color.png"/>
                       <nuxt-link :to="`/product/${product.id}`">Detail</nuxt-link>
                     </b-card>
                   </div>
@@ -32,7 +33,7 @@
               <div class="card-body">
                 <div class="row">
                   <div class="col">
-                    <b-card-text>Number of products: </b-card-text>
+                    <b-card-text>Products: </b-card-text>
                   </div>
                   <div class="col">
                     <b-card-text>{{ $store.getters.countProducts }}</b-card-text>
@@ -40,10 +41,10 @@
                 </div>
                 <div class="row">
                   <div class="col">
-                    <b-card-text>Under 25: </b-card-text>
+                    <b-card-text>Favorites: </b-card-text>
                   </div>
                   <div class="col">
-                    <b-card-text>{{ $store.getters.underAge }}</b-card-text>
+                    <b-card-text>{{ $store.getters.countFavorite }}</b-card-text>
                   </div>
                 </div>
               </div>
@@ -78,7 +79,28 @@
             key: 'email',
             value: 'Email'
           }
-        ]
+        ],
+        isFavorite: false,
+      }
+    },
+    created() {
+      this.setUser();
+      this.test();
+      this.getFavorite();
+    },
+    methods: {
+      async setUser() {
+        await this.$store.dispatch('setUser');
+      },
+      async test() {
+        await this.$store.dispatch('setProducts');
+      },
+      setFavorite(favorite) {
+        favorite.isFavorite = true;
+        this.$store.dispatch('setFavorite', favorite);
+      },
+      getFavorite() {
+        this.$store.dispatch('getFavorite');
       }
     },
     computed: {

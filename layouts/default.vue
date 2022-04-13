@@ -14,7 +14,7 @@
               <b-badge variant="light">{{ $store.getters.countCarts }} <span class="sr-only">unread messages</span></b-badge>
             </nuxt-link>&nbsp;&nbsp;
           </div>
-          <b-avatar badge badge-variant="success" src="https://placekitten.com/300/300" v-if="$auth.loggedIn"></b-avatar>
+          <b-avatar badge badge-variant="primary" src="https://placekitten.com/300/300" v-if="$auth.loggedIn"></b-avatar>
           <b-nav-item-dropdown right>
             <template #button-content>
               <em v-if="$store.getters.getProfile">{{ $store.getters.getProfile.name }}</em>
@@ -39,9 +39,6 @@
     methods: {
       cart() {
         this.$router.push('/cart');
-      },
-      logout() {
-        this.$store.dispatch('logout');
       }
     }
   }

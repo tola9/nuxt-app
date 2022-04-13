@@ -5,48 +5,14 @@ Vue.use(Vuex)
 
 export default () => new Vuex.Store({
   state: {
-    user: [],
     id: 0,
     profile: Object(),
-    products: [
-      {
-        id: 1,
-        title: 'Title One',
-        detail: 'It is a long established fact that a reader will be distracted by the readable contentr  (injected humour and the like).',
-        image: 'https://azcd.domayne.com.au/media/catalog/product/cache/25/small_image/400x225/9df78eab33525d08d6e5fb8d27136e95/1/7/17_159.jpg',
-        price: 12,
-        qty: 1,
-      },
-      {
-        id: 2,
-        title: 'Title Two',
-        detail: 'It is a long established fact that a reader will be distracted by the readable content pose (injected humour and the like).',
-        image: 'https://i.nextmedia.com.au/Utils/ImageResizer.ashx?n=https%3A%2F%2Fi.nextmedia.com.au%2FNews%2F20181003110807_surface-pro-6-1_web.jpg&w=480&c=0&s=1',
-        price: 50,
-        qty: 1,
-      },
-      {
-        id: 3,
-        title: 'Title Three',
-        detail: 'It is a long established fact that a reader will be distracted by the readable contentr  (injected humour and the like).',
-        image: 'https://little-beans.net/wp-content/uploads/2022/02/Surface-Laptop-Studio-eyecatch.jpg',
-        price: 40,
-        qty: 1,
-      },
-      {
-        id: 4,
-        title: 'Title Four',
-        detail: 'It is a long established fact that a reader will be distracted by the readable content pose (injected humour and the like).',
-        image: 'https://surface-world.de/wp-content/uploads/2021/09/microsoft-surface-laptop-studio-for-business-3.jpg',
-        price: 25,
-        qty: 1,
-      }
-    ],
+    products: [],
     cart: [],
     qty: 1,
+    favorite: []
   },
   getters: {
-    // getProduct: (state => state.product),
     totalPrice: (state => {
       return state.cart.reduce((total, item) => {
         return total + item.price * item.qty;
@@ -57,28 +23,12 @@ export default () => new Vuex.Store({
     countCarts: (state => state.cart.length),
     countProducts: (state => state.products.length),
     getProfile: (state => state.profile),
-    getUsers: state => state.user,
-    countUsers: state => state.user.length,
-    underAge: state => {
-      let total = 0;
-      state.user.filter(item => {
-        if ( item.age < 25 ) {
-          return total += 1;
-        }
-      });
-      return total;
-    }
+    getFavorites: (state => state.favorite),
+    countFavorite: (state => state.favorite.length)
   },
   mutations: {
-    ADD_USER: (state, payload) => {
-      payload.id = ++state.id;
-      state.user.push(payload);
-      Vue.toasted.success("Created Successfully ✔🎉!!", {
-        theme: "toasted-primary",
-        position: "top-right",
-        duration : 3000
-      });
-
+    SET_USER: (state, payload) => {
+      state.profile = payload;
     },
     REGISTER: (state, payload) => {
       localStorage.setItem('name', payload.name);
@@ -136,11 +86,29 @@ export default () => new Vuex.Store({
       carts.splice(index, 1);
       state.cart = carts;
       return state.cart;
+    },
+    SET_PRODUCT: (state, payload) => {
+      state.products = payload;
+    },
+    SET_FAVORITE: () => {
+      Vue.toasted.success('Added to favorite', {
+        theme: "toasted-primary",
+        position: "top-right",
+        duration: 2000
+      });
+    },
+    GET_FAVORITE: (state, payload) => {
+      state.favorite = payload;
     }
   },
   actions: {
-    addUser: (context, payload) => {
-      context.commit('ADD_USER', payload)
+    async setProducts(context) {
+      let res = await this.$axios.$get('products');
+      context.commit('SET_PRODUCT', res);
+    },
+    async setUser(context) {
+      let res = await this.$axios.$get('user');
+      context.commit('SET_USER', res.data);
     },
     register: async (context, payload) => {
       let res = await context.state.$axios.post('register', {
@@ -165,6 +133,31 @@ export default () => new Vuex.Store({
     },
     removeCart: (context, payload) => {
       context.commit('REMOVE_CART', payload);
+    },
+    async setFavorite(context, payload) {
+      if(context.state.favorite.length) {
+        let favoriteId = context.state.favorite.filter(item => {
+          return item.id == payload.id;
+        });
+        if(favoriteId.length && favoriteId[0].id == payload.id) {
+          return Vue.toasted.info('Already Exist', {
+            theme: "toasted-primary",
+            position: "top-right",
+            duration: 2000
+          })
+        }
+      }
+      await this.$axios.$post('/favorite', payload);
+      context.commit('SET_FAVORITE');
+      await context.dispatch('getFavorite');
+      await context.dispatch('updateProduct', payload);
+    },
+    async getFavorite(context) {
+      let res = await this.$axios.$get('/favorite');
+      context.commit('GET_FAVORITE', res);
+    },
+    async updateProduct(context, payload) {
+      await this.$axios.$put(`/products/${payload.id}`, payload);
     }
   }
 })

@@ -54,9 +54,11 @@
     methods: {
       async login() {
         try {
-          let response = await this.$auth.loginWith('local', {data: {email: this.email, password: this.password}});
-          this.$auth.$storage.setUniversal('email', response.config.data.email, true)
-          this.$auth.$storage.setUniversal('password', response.config.data.password, true)
+          let data = await this.$axios.$get('/login');
+          console.log(data);
+          let res = await this.$auth.loginWith('local', {data: {email: this.email, password: this.password}});
+          let user = res.config.data;
+          this.$auth.setUser(user);
           return Vue.toasted.success("Logged In 🔓!!", {
             theme: "toasted-primary",
             position: "top-right",
