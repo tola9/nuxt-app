@@ -5,7 +5,8 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
           <NuxtLink class="link" active-class="active" exact to="/">Home</NuxtLink>
-          <NuxtLink class="link" active-class="active" exact to="/user">User</NuxtLink>
+<!--          <NuxtLink class="link" active-class="active" exact to="/user">User</NuxtLink>-->
+          <NuxtLink class="link" active-class="active" exact to="/favorite">Favorite</NuxtLink>
         </b-navbar-nav>
         <b-navbar-nav class="ml-auto">
           <div class="text-center">

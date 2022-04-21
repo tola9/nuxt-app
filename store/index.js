@@ -30,16 +30,6 @@ export default () => new Vuex.Store({
     SET_USER: (state, payload) => {
       state.profile = payload;
     },
-    REGISTER: (state, payload) => {
-      localStorage.setItem('name', payload.name);
-      localStorage.setItem('email', payload.email);
-      localStorage.setItem('password', payload.password);
-      Vue.toasted.success('User created successfully', {
-        theme: "primary",
-        duration: 3000,
-        position: "top-right"
-      });
-    },
     SET_PROFILE: (state, payload) => {
       state.profile = payload;
     },
@@ -99,40 +89,39 @@ export default () => new Vuex.Store({
     },
     GET_FAVORITE: (state, payload) => {
       state.favorite = payload;
+    },
+    REMOVE_FAVORITE: (state, payload) => {
+      let favorites = state.favorite;
+      let index = favorites.findIndex(item => {
+        return item.id == payload.id;
+      });
+      favorites.splice(index, 1);
+      state.favorite = favorites;
     }
   },
   actions: {
-    async setProducts(context) {
+    async setProducts({commit}) {
       let res = await this.$axios.$get('products');
-      context.commit('SET_PRODUCT', res);
+      commit('SET_PRODUCT', res);
     },
-    async setUser(context) {
+    async setUser({ commit }) {
       let res = await this.$axios.$get('user');
-      context.commit('SET_USER', res.data);
+      commit('SET_USER', res.data);
     },
-    register: async (context, payload) => {
-      let res = await context.state.$axios.post('register', {
-        name: payload.name,
-        email: payload.email,
-        password: payload.password
-      })
-      console.log(res.data);
-      context.commit('REGISTER', payload);
+    setProfile: ({ commit}, payload) => {
+      commit('SET_PROFILE', payload);
     },
-    setProfile: (context, payload) => {
-      context.commit('SET_PROFILE', payload);
+    addToCart: ({ commit}, payload) => {
+      commit('ADD_TO_CART', payload);
     },
-    addToCart: (context, payload) => {
-      context.commit('ADD_TO_CART', payload);
+    increase: ({ commit}, payload) => {
+      commit('INCREASE', payload);
     },
-    increase: (context, payload) => {
-      context.commit('INCREASE', payload);
+    decrease: ({ commit}, payload) => {
+      commit('DECREASE', payload);
     },
-    decrease: (context, payload) => {
-      context.commit('DECREASE', payload);
-    },
-    removeCart: (context, payload) => {
-      context.commit('REMOVE_CART', payload);
+    removeCart: ({ commit }, payload) => {
+      commit('REMOVE_CART', payload);
     },
     async setFavorite(context, payload) {
       if(context.state.favorite.length) {
@@ -152,12 +141,18 @@ export default () => new Vuex.Store({
       await context.dispatch('getFavorite');
       await context.dispatch('updateProduct', payload);
     },
-    async getFavorite(context) {
+    async getFavorite({ commit }) {
       let res = await this.$axios.$get('/favorite');
-      context.commit('GET_FAVORITE', res);
+      commit('GET_FAVORITE', res);
     },
-    async updateProduct(context, payload) {
+    async updateProduct({ commit }, payload) {
       await this.$axios.$put(`/products/${payload.id}`, payload);
+    },
+    async removeFavorite({commit, dispatch}, payload) {
+      await this.$axios.$delete(`/favorite/${payload.id}`);
+      commit('REMOVE_FAVORITE', payload);
+      payload.isFavorite = false;
+      await dispatch('updateProduct', payload);
     }
   }
 })

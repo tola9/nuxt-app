@@ -4,11 +4,13 @@
       <div class="row col-md-12">
         <div class="col-md-8 mt-5">
           <div v-if="!carts.length">
-            <div class="card-header">
-              <h2>Product Not Found</h2>
-            </div>
-            <div class="card-body">
-              <p> No Product to show</p>
+            <div class="card">
+              <div class="card-header">
+                <h2>Cart</h2>
+              </div>
+              <div class="card-body">
+                <h5> Product Not Found!!</h5>
+              </div>
             </div>
           </div>
             <div class="card-body"v-for="cart in carts" :key="cart.id">
@@ -96,11 +98,20 @@
 </script>
 
 <style scoped>
+  .card {
+    border: 1px solid gray;
+  }
+  h5, .h5 {
+    text-align: center;
+  }
   .col-sm-2 {
     flex: 0 0 16.666667%;
     max-width: 50px;
   }
   .btn-success {
     background-color: #019267;
+  }
+  .card-header:first-child {
+    text-align: center;
   }
 </style>

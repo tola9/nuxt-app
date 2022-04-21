@@ -20,7 +20,7 @@
                         {{ product.detail }}
                       </b-card-text>
                       <img @click="setFavorite(product)" v-if="!product.isFavorite" src="https://img.icons8.com/small/16/000000/like--v1.png"/>
-                      <img v-else src="https://img.icons8.com/tiny-color/16/000000/experimental-like-tiny-color.png"/>
+                      <img @click="removeFavorite(product)" v-else src="https://img.icons8.com/tiny-color/16/000000/experimental-like-tiny-color.png"/>
                       <nuxt-link :to="`/product/${product.id}`">Detail</nuxt-link>
                     </b-card>
                   </div>
@@ -101,6 +101,9 @@
       },
       getFavorite() {
         this.$store.dispatch('getFavorite');
+      },
+      async removeFavorite(payload) {
+        await this.$store.dispatch('removeFavorite', payload);
       }
     },
     computed: {
