@@ -97,6 +97,9 @@ export default () => new Vuex.Store({
       });
       favorites.splice(index, 1);
       state.favorite = favorites;
+    },
+    ADD_PRODUCT: (state, payload) => {
+      console.log('payload', payload);
     }
   },
   actions: {
@@ -153,6 +156,14 @@ export default () => new Vuex.Store({
       commit('REMOVE_FAVORITE', payload);
       payload.isFavorite = false;
       await dispatch('updateProduct', payload);
+    },
+    async addProduct({ commit }, payload) {
+      await this.$axios.post('/products', payload);
+      Vue.toasted.success('Created successfully', {
+        theme: "toasted-primary",
+        position: "top-right",
+        duration: 1000
+      })
     }
   }
 })
