@@ -110,6 +110,9 @@
       products() {
         return this.$store.getters.getProducts;
       }
+    },
+    mounted() {
+      console.log(process.env.API_URL)
     }
   }
 </script>
