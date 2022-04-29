@@ -37,11 +37,17 @@
   export default {
     name: "default",
     components: {Footer},
+    created() {
+      this.getCart();
+    },
     methods: {
       cart() {
         this.$router.push('/cart');
+      },
+      getCart() {
+        return this.$store.dispatch('getCart');
       }
-    }
+    },
   }
 </script>
 

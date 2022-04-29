@@ -62,23 +62,20 @@
   export default {
     name: "productId",
     middleware: 'auth',
-    data () {
-      return {
-        product: null
-      }
-    },
     created() {
-      this.product = this.products();
+      this.getProduct();
     },
     methods: {
-      products() {
-        let product =  this.$store.getters.getProducts.filter(product => {
-          return product.id == this.$route.params.id;
-        });
-        return product[0];
-      },
       addToCart(payload) {
         this.$store.dispatch('addToCart', payload);
+      },
+      getProduct() {
+        this.$store.dispatch('product', this.$route.params.id);
+      }
+    },
+    computed: {
+      product() {
+        return this.$store.getters.getProduct;
       }
     }
   }

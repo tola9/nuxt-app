@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import {colgroupMixin} from "bootstrap-vue/esm/components/table/helpers/mixin-colgroup";
 
 Vue.use(Vuex)
 
@@ -10,7 +11,8 @@ export default () => new Vuex.Store({
     products: [],
     cart: [],
     qty: 1,
-    favorite: []
+    favorite: [],
+    product: ''
   },
   getters: {
     totalPrice: (state => {
@@ -24,7 +26,8 @@ export default () => new Vuex.Store({
     countProducts: (state => state.products.length),
     getProfile: (state => state.profile),
     getFavorites: (state => state.favorite),
-    countFavorite: (state => state.favorite.length)
+    countFavorite: (state => state.favorite.length),
+    getProduct: (state => state.product)
   },
   mutations: {
     SET_USER: (state, payload) => {
@@ -34,13 +37,7 @@ export default () => new Vuex.Store({
       state.profile = payload;
     },
     ADD_TO_CART: (state, payload) => {
-      if(state.cart.includes(payload)) {
-        return Vue.toasted.info('Already Exist!', {
-          theme: "toasted-primary",
-          position: "top-right",
-          duration: 3000
-        })
-      }
+
       state.cart.push(payload);
       return Vue.toasted.success('Added Successfully', {
         theme: "toasted-primary",
@@ -100,6 +97,12 @@ export default () => new Vuex.Store({
     },
     ADD_PRODUCT: (state, payload) => {
       console.log('payload', payload);
+    },
+    GET_CART: (state, payload) => {
+      state.cart = payload;
+    },
+    PRODUCT: (state, payload) => {
+      state.product = payload;
     }
   },
   actions: {
@@ -114,35 +117,48 @@ export default () => new Vuex.Store({
     setProfile: ({ commit}, payload) => {
       commit('SET_PROFILE', payload);
     },
-    addToCart: ({ commit}, payload) => {
+    async addToCart ({ commit, state }, payload) {
+      if(state.cart.length) {
+        let cart = state.cart.filter(item => {
+          return item.id == payload.id;
+        })
+        if(cart.length) {
+          return Vue.toasted.info('Already Exist!', {
+            theme: "toasted-primary",
+            position: "top-right",
+            duration: 3000
+          })
+        }
+      }
+      await this.$axios.$post('/carts', payload);
       commit('ADD_TO_CART', payload);
     },
-    increase: ({ commit}, payload) => {
+    async getCart({ commit }) {
+      let res = await this.$axios.$get('/carts');
+      commit('GET_CART', res)
+    },
+    async increase ({ commit}, payload) {
+      console.log('payload', payload.qty)
+      await this.$axios.$put('/carts/' + payload.id, payload);
       commit('INCREASE', payload);
     },
     decrease: ({ commit}, payload) => {
       commit('DECREASE', payload);
     },
-    removeCart: ({ commit }, payload) => {
+    async removeCart ({ commit }, payload) {
       commit('REMOVE_CART', payload);
+      await this.$axios.$delete('/carts/' + payload.id);
+      return Vue.toasted.success('Removed successfully', {
+        theme: 'toasted-primary',
+        position: "top-right",
+        duration: 1000
+      })
     },
-    async setFavorite(context, payload) {
-      if(context.state.favorite.length) {
-        let favoriteId = context.state.favorite.filter(item => {
-          return item.id == payload.id;
-        });
-        if(favoriteId.length && favoriteId[0].id == payload.id) {
-          return Vue.toasted.info('Already Exist', {
-            theme: "toasted-primary",
-            position: "top-right",
-            duration: 2000
-          })
-        }
-      }
+    async setFavorite({ commit, dispatch }, payload) {
       await this.$axios.$post('/favorite', payload);
-      context.commit('SET_FAVORITE');
-      await context.dispatch('getFavorite');
-      await context.dispatch('updateProduct', payload);
+      commit('SET_FAVORITE');
+      await dispatch('getFavorite');
+      await dispatch('updateProduct', payload);
     },
     async getFavorite({ commit }) {
       let res = await this.$axios.$get('/favorite');
@@ -164,6 +180,10 @@ export default () => new Vuex.Store({
         position: "top-right",
         duration: 1000
       })
+    },
+    async product({ commit }, id) {
+      let res = await this.$axios.$get('/products/' + id);
+      commit('PRODUCT', res);
     }
   }
 })

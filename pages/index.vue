@@ -104,7 +104,7 @@
       },
       async removeFavorite(payload) {
         await this.$store.dispatch('removeFavorite', payload);
-      }
+      },
     },
     computed: {
       products() {

@@ -54,7 +54,7 @@
                   <b-card-text>Discount : </b-card-text>
                 </div>
                 <div class="col">
-                  <b-card-text>{{ $store.getters.underAge }}</b-card-text>
+                  <b-card-text>0</b-card-text>
                 </div>
               </div>
             </div>
@@ -78,6 +78,9 @@
 <script>
   export default {
     name: "index",
+    created() {
+      this.getCart();
+    },
     methods: {
       increase(payload) {
         this.$store.dispatch('increase', payload);
@@ -87,6 +90,9 @@
       },
       removeCart(payload) {
         this.$store.dispatch('removeCart', payload);
+      },
+      getCart() {
+        this.$store.dispatch('getCart');
       }
     },
     computed: {
