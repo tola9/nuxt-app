@@ -23,6 +23,10 @@ export default {
   css: [
   ],
 
+  router: {
+    middleware: 'auth'
+  },
+
   server: {
     port: 8080 // default: 3000
   },

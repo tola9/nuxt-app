@@ -59,7 +59,7 @@
 <script>
   export default {
     name: 'IndexPage',
-    middleware: 'auth',
+    middleware: false,
     data () {
       return {
         fields: [
